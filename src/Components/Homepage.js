@@ -8,6 +8,7 @@ import "react-h5-audio-player/lib/styles.css";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import "./Homepage.css";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
 
 class Homepage extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Homepage extends React.Component {
       songsList: {},
       currentSong: {},
       myOfflinePlayList,
+      selectMyList: "",
     };
   }
 
@@ -28,62 +30,73 @@ class Homepage extends React.Component {
           songName: "first song",
           singerName: "Karuna Verma",
           songUrl: "song.mpeg",
+          bookmark: false,
         },
         {
           position: 2,
           songName: "second song",
           singerName: "Karuna Verma",
           songUrl: "song2.mpeg",
+          bookmark: false,
         },
         {
           position: 3,
           songName: "third song",
           singerName: "Karuna Verma",
           songUrl: "song3.mpeg",
+          bookmark: false,
         },
         {
           position: 4,
           songName: "fourth song",
           singerName: "Karuna Verma",
           songUrl: "song4.mpeg",
+          bookmark: false,
         },
         {
           position: 5,
           songName: "fifth song",
           singerName: "Karuna Verma",
           songUrl: "song5.mpeg",
+          bookmark: false,
         },
         {
           position: 1,
           songName: "first song",
           singerName: "Karuna Verma",
           songUrl: "song.mpeg",
+          bookmark: false,
         },
         {
           position: 2,
           songName: "second song",
           singerName: "Karuna Verma",
           songUrl: "song2.mpeg",
+          bookmark: false,
         },
         {
           position: 3,
           songName: "third song",
           singerName: "Karuna Verma",
           songUrl: "song3.mpeg",
+          bookmark: false,
         },
         {
           position: 4,
           songName: "fourth song",
           singerName: "Karuna Verma",
           songUrl: "song4.mpeg",
+          bookmark: false,
         },
         {
           position: 5,
           songName: "fifth song",
           singerName: "Karuna Verma",
           songUrl: "song5.mpeg",
+          bookmark: false,
         },
       ],
+      currentSong: { position: 1, songName: "first song", singerName: "Karuna Verma", songUrl: "song.mpeg" },
     });
   }
 
@@ -99,18 +112,21 @@ class Homepage extends React.Component {
   };
 
   setOfflineSong = (singleSong) => {
-    console.log(singleSong);
+    var songsItem = {};
+    this.setState({
+      currentSong: {
+        Bookmark: true,
+      },
+    });
+    var songs = [singleSong];
+    songsItem.myOfflinePlayList = songs;
     var offlineSong = JSON.parse(localStorage.getItem("myOfflinePlayList"));
-    console.log(offlineSong);
     if (offlineSong === null) {
-      var offLinePlayList = [];
-      offLinePlayList.push(JSON.stringify(singleSong));
-      console.log(offLinePlayList);
-      localStorage.setItem("myOfflinePlayList", offLinePlayList);
+      console.log("null");
+      localStorage.setItem("myOfflinePlayList", JSON.stringify(songsItem));
     } else {
-      var offLinePlayList = offlineSong;
-      offLinePlayList.push(singleSong);
-      localStorage.setItem("myOfflinePlayList", offLinePlayList);
+      var mySongs = offlineSong.myOfflinePlayList.push(singleSong);
+      localStorage.setItem("myOfflinePlayList", JSON.stringify(offlineSong));
     }
   };
 
@@ -162,7 +178,11 @@ class Homepage extends React.Component {
                       <FavoriteBorderIcon style={{ color: "white" }} />
                     </IconButton>
                     <IconButton onClick={() => this.setOfflineSong(singleSong)} edge="end" aria-label="delete">
-                      <BookmarkBorderIcon style={{ color: "white" }} />
+                      {singleSong.bookmark ? (
+                        <BookmarkIcon style={{ color: "white" }} />
+                      ) : (
+                        <BookmarkBorderIcon style={{ color: "white" }} />
+                      )}
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -172,51 +192,103 @@ class Homepage extends React.Component {
             </ListItemLink> */}
             </List>
           </div>
-          <div
-            style={{
-              display: "flex",
-              textAlign: "center",
-              opacity: 0.9,
-              justifyContent: "center",
-              alignItems: "center",
-              height: "25vh",
-              flexDirection: "column",
-              width: "25vh",
-              backgroundColor: "white",
-              borderRadius: "30px",
-              marginLeft: "10%",
-            }}
-          >
-            <div>
-              <img style={{ height: "40px" }} src="play-audio-icon.png" alt="" />
+          <div style={{ width: "100vh", marginLeft: "9%" }}>
+            <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  display: "flex",
+                  textAlign: "center",
+                  opacity: 0.9,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "30vh",
+                  flexDirection: "column",
+                  width: "50vh",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                  backgroundImage: `url("like-icon.jpeg")`,
+                  marginLeft: "10%",
+                }}
+                onClick={() => this.setState({ selectMyList: "Offline" })}
+              >
+                <div>
+                  <img style={{ height: "40px" }} src="play-audio-icon.png" alt="" />
+                </div>
+                <span style={{ color: "#f91909", fontSize: "1.5rem" }}>Offline Songs</span>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  textAlign: "center",
+                  opacity: 0.9,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  backgroundImage: `url("like-icon.jpeg")`,
+                  height: "30vh",
+                  width: "50vh",
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                  marginLeft: "10%",
+                }}
+                onClick={() => this.setState({ selectMyList: "Liked" })}
+              >
+                <div>
+                  <img style={{ height: "40px" }} src="play-audio-icon.png" alt="" />
+                </div>
+                <span style={{ color: "#f91909", fontSize: "1.5rem" }}>Like Songs</span>
+              </div>
             </div>
-            <span style={{ color: "#f91909", fontSize: "1.5rem" }}>Offline Songs</span>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              textAlign: "center",
-              opacity: 0.9,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              height: "25vh",
-              width: "25vh",
-              backgroundColor: "white",
-              borderRadius: "30px",
-              marginLeft: "10%",
-            }}
-          >
-            <div>
-              <img style={{ height: "40px" }} src="play-audio-icon.png" alt="" />
-            </div>
-            <span style={{ color: "#f91909", fontSize: "1.5rem" }}>Liked Songs</span>
+            {this.state.selectMyList !== "" ? (
+              <>
+                <div
+                  style={{
+                    backgroundColor: "#944e4e",
+                    borderRadius: "10px",
+                    padding: "1%",
+                    marginTop: "3%",
+                    marginLeft: "10%",
+                    width: "45%",
+                  }}
+                >
+                  <span style={{ color: "white", fontSize: "1.5rem", marginLeft: "5%" }}>
+                    {this.state.selectMyList} Songs
+                  </span>
+                </div>
+                <div id="scroll" style={{ display: "flex", margin: "4% 3%", overflowY: "auto", overflowX: "auto" }}>
+                  {this.state.songsList.map((singleSong, index) => (
+                    <div
+                      style={{
+                        display: "flex",
+                        textAlign: "center",
+                        opacity: 0.9,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        padding: "20px 35px",
+                        backgroundColor: "#ad4747",
+                        borderRadius: "10px",
+                        marginLeft: "3%",
+                        backgroundImage: `url("offline-image.jpg")`,
+                      }}
+                    >
+                      <div>
+                        <img style={{ height: "40px" }} src="play-audio-icon.png" alt="" />
+                      </div>
+                      <span style={{ color: "#f91909", fontSize: "1.5rem" }}>{singleSong.songName}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <div style={{ position: "fixed", bottom: "10px", width: "90%" }}>
             <AudioPlayer
-              autoPlay
+              //   autoPlay
               src={this.state.currentSong.songUrl}
               onPlay={(e) => console.log("onPlay")}
               // other props here
