@@ -1,0 +1,17 @@
+#scroll::-webkit-scrollbar {
+  height: 2px;
+  width: 5px;
+  background-color: #fafafa;
+}
+#scroll::-webkit-scrollbar-thumb {
+  background-color: grey;
+  border-radius: 12px;
+}
+#scroll::-webkit-scrollbar-thumb:horizontal {
+  background: #000;
+  border-radius: 10px;
+}
+#scroll::-webkit-scrollbar-track {
+  border: 2px solid transparent;
+  margin-right: 15px;
+}
